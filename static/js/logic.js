@@ -120,7 +120,7 @@ legend.onAdd = function (myMap) {
     for (var i = 0; i < mag.length; i++) {
         div.innerHTML +=
             '<i style="background:' + color(mag[i] + 1) + '"></i>' +
-            mag[i] + (mag[i + 1] ? ' &ndash; ' + mag[i + 1] + '<br>' : ' +');
+            mag[i] + (mag[i + 1] ? ' &ndash; ' + mag[i + 1] + '<br><br>' : ' +');
     }
 
     return div;
