@@ -1,8 +1,8 @@
 var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-        attribution: "Map data &copy; <a href=\"https://www.openlightmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-        maxZoom: 18,
-        id: 'mapbox/light-v10',
-        accessToken: key
+    attribution: "Map data &copy; <a href=\"https://www.openlightmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+    maxZoom: 18,
+    id: 'mapbox/light-v10',
+    accessToken: key
     });
 
 var satellitemap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -20,9 +20,9 @@ var outdoorsmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{
 });
 
 var baseMaps = {
+    "Outdoors Map": outdoorsmap,
     "Light Map": lightmap,
-    "Satellite Map": satellitemap,
-    "Outdoors Map": outdoorsmap
+    "Satellite Map": satellitemap    
 };
 
 var layer_plates = new L.LayerGroup();
@@ -30,12 +30,6 @@ var layer_earthquakes = new L.LayerGroup();
 
 var usgsUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
 var platesUrl = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_plates.json"
-
-d3.json(platesUrl, function (data){
-    L.geoJSON(data).addTo(layer_plates);
-    
-    layer_plates.addTo(myMap);
-});
 
 d3.json(usgsUrl, function(data) {
 
@@ -48,27 +42,27 @@ d3.json(usgsUrl, function(data) {
     function something(feature) {
         var color ='';
         if (feature.properties.mag > 5) {
-            color = '#472D30';
+            color = '#4CC9F0';
         } else if (feature.properties.mag > 4) {
-            color = '#723D46';
+            color = '#4361EE';
         } else if (feature.properties.mag > 3) {
-            color = '#E26D5C';
+            color = '#3A0CA3';
         } else if (feature.properties.mag > 2) {
-            color = '#f1a782';
+            color = '#7209B7';
         } else if (feature.properties.mag > 1) {
-            color = '#FFE1A8';
+            color = '#B5179E';
         } else {
-            color = '#C9CBA3';
+            color = '#F72585';
         }
     
         var style = {
             opacity: 1,
             fillOpacity: 1,
-            color: "white",
+            color: "black",
             fillColor: color,
-            radius: (feature.properties.mag * 10),
+            radius: (feature.properties.mag * 8),
             stroke: true,
-            weight: 0.5
+            weight: 1
         }
         
         return style
@@ -87,13 +81,22 @@ d3.json(usgsUrl, function(data) {
     // console.log('hi');
 });
 
+d3.json(platesUrl, function (data){
+        
+    L.geoJSON(data,{
+        color: 'purple',
+        weight: 2,
+        fillOpacity: 0.01
+    }).addTo(layer_plates);
+    
+    layer_plates.addTo(myMap);
+});
+
 var myMap = L.map("map", {
-    center: [
-    37.09, -95.71
-    ],
-    zoom: 5,
+    center: [20, 0],
+    zoom: 3,
     layers: [
-        lightmap, 
+        outdoorsmap, 
         layer_earthquakes,
         layer_plates
     ]
