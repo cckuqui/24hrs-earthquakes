@@ -1,23 +1,50 @@
-// Store our API endpoint inside queryUrl
+var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+        attribution: "Map data &copy; <a href=\"https://www.openlightmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+        maxZoom: 18,
+        id: 'mapbox/light-v10',
+        accessToken: key
+    });
+
+var satellitemap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+    maxZoom: 18,
+    id: "mapbox/satellite-v9",
+    accessToken: key
+});
+
+var outdoorsmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+    attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
+    maxZoom: 18,
+    id: "mapbox/outdoors-v11",
+    accessToken: key
+});
+
+var baseMaps = {
+    "Light Map": lightmap,
+    "Satellite Map": satellitemap,
+    "Outdoors Map": outdoorsmap
+};
+
+var layer_plates = new L.LayerGroup();
+var layer_earthquakes = new L.LayerGroup();
+
 var usgsUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
 var platesUrl = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_plates.json"
 
-d3.json(usgsUrl, function(data) {
-    createFeatures(data.features);
+d3.json(platesUrl, function (data){
+    L.geoJSON(data).addTo(layer_plates);
+    
+    layer_plates.addTo(myMap);
 });
 
-// d3.json(platesUrl, function (data){
-//     thing(data.features);
-// });
-
-function createFeatures(earthquakeData) {
+d3.json(usgsUrl, function(data) {
 
     function popUp(feature, layer) {
         layer.bindPopup("<h3>" + feature.properties.place +
         "</h3><hr><p>" + new Date(feature.properties.time) + "</p>" +
         "<p> Magnitude: " + feature.properties.mag + "</p>");
     }
-
+    
     function something(feature) {
         var color ='';
         if (feature.properties.mag > 5) {
@@ -33,7 +60,7 @@ function createFeatures(earthquakeData) {
         } else {
             color = '#C9CBA3';
         }
-
+    
         var style = {
             opacity: 1,
             fillOpacity: 1,
@@ -47,60 +74,36 @@ function createFeatures(earthquakeData) {
         return style
     }
     
-    var earthquakes = L.geoJSON(earthquakeData, {
+    
+    L.geoJSON(data, {
         pointToLayer: function (feature, latlng) {
             return L.circleMarker(latlng);
         },
         style: something,
         onEachFeature: popUp
-    });
+    }).addTo(layer_earthquakes);
 
-    // Sending our earthquakes layer to the createMap function
-    createMap(earthquakes);
-}
+    layer_earthquakes.addTo(myMap);
+    // console.log('hi');
+});
 
-function createMap(earthquakes) {
+var myMap = L.map("map", {
+    center: [
+    37.09, -95.71
+    ],
+    zoom: 5,
+    layers: [
+        lightmap, 
+        layer_earthquakes,
+        layer_plates
+    ]
+});
 
-    var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-        attribution: "Map data &copy; <a href=\"https://www.openlightmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-        maxZoom: 18,
-        id: 'mapbox/light-v10',
-        accessToken: API_KEY
-    });
+var overlayMaps = {
+    Earthquakes: layer_earthquakes,
+    "Tectonic Plates": layer_plates
+};
 
-    var satellitemap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-        attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-        maxZoom: 18,
-        id: "mapbox/satellite-v9",
-        accessToken: API_KEY
-    });
-
-    var outdoorsmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-        attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
-        maxZoom: 18,
-        id: "mapbox/outdoors-v11",
-        accessToken: API_KEY
-    });
-
-    var baseMaps = {
-        "Light Map": lightmap,
-        "Satellite Map": satellitemap,
-        "Outdoors Map": outdoorsmap
-    };
-
-    var overlayMaps = {
-        Earthquakes: earthquakes
-    };
-
-    var myMap = L.map("map", {
-        center: [
-        37.09, -95.71
-        ],
-        zoom: 5,
-        layers: [lightmap, earthquakes]
-    });
-
-    L.control.layers(baseMaps, overlayMaps, {
-        collapsed: false
-    }).addTo(myMap);
-}
+L.control.layers(baseMaps, overlayMaps, {
+    collapsed: false
+}).addTo(myMap);
