@@ -91,7 +91,7 @@ var myMap = L.map("map", {
     center: [20, 0],
     zoom: 3,
     layers: [
-        streetsmap, 
+        satellitemap, 
         layer_plates,
         layer_earthquakes  
     ]
