@@ -14,15 +14,15 @@ var satellitemap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/
     accessToken: key
 });
 
-var outdoorsmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+var streetsmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
     maxZoom: 18,
-    id: "mapbox/outdoors-v11",
+    id: "mapbox/streets-v11",
     accessToken: key
 });
 
 var baseMaps = {
-    "Outdoors Map": outdoorsmap,
+    "Streets Map": streetsmap,
     "Light Map": lightmap,
     "Satellite Map": satellitemap    
 };
@@ -91,7 +91,7 @@ var myMap = L.map("map", {
     center: [20, 0],
     zoom: 3,
     layers: [
-        outdoorsmap, 
+        streetsmap, 
         layer_plates,
         layer_earthquakes  
     ]
