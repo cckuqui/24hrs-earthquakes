@@ -27,7 +27,3 @@ Also, I wanted to add a second dataset to visualize the relationship between the
 ## Results
 
 ![Deployed site](Images/deployed_site.gif)
-
-### Copyright
-
-Trilogy Education Services © 2019. All Rights Reserved.
