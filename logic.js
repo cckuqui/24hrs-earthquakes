@@ -1,4 +1,4 @@
-var key = "pk.eyJ1IjoiY2NrdXF1aSIsImEiOiJja2E0a291bHAwd2F1M2ZueHpmaGM1M2F6In0.b9ZopJUHldPPhOpyTHVSWA";
+var key = "pk.eyJ1IjoiY2NrdXF1aSIsImEiOiJja2NwaDdodDgwdGU3MnJvMmwyd2RvZGpuIn0._Rc1PlKi_cacQMQXq7_G9g";
 
 var lightmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "Map data &copy; <a href=\"https://www.openlightmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",

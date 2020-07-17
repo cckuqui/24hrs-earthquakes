@@ -5,25 +5,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Earthquakes in the last 24hrs</title>
+  <link rel="stylesheet" href="https://bootswatch.com/4/minty/bootstrap.min.css" media="screen">       
+  <link rel="stylesheet" href="https://bootswatch.com/_assets/css/custom.min.css">
+  <link rel="stylesheet" href="css/d3Style.css">
+  <link rel="icon" href="Images/ground.svg" type="image/x-icon">
 
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.css" />
 
   <!-- Our CSS -->
-  <link rel="stylesheet" type="text/css" href="static/css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-
+<div class='container'>
+  <br>
+  <h1 class='text-center'>Earthquakes in the last 24hrs</h1>
+  <br>
+  
   <!-- The div that holds our map -->
-  <!-- <div class='container'> -->
-    <div id="map"></div>
-  <!-- </div> -->
-
+  <div class='map' id="map"></div>
+  <br>
+  <div>Icons made by <a href="https://www.flaticon.com/free-icon/earthquake_864568" title="pongsakornRed">pongsakornRed</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
+</div>
   <!-- Leaflet JavaScript -->
   <script src="https://unpkg.com/leaflet@1.0.0-rc.3/dist/leaflet.js"></script>
   <!-- D3 JavaScript -->
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.2.3/d3.min.js"></script>
   <!-- Our JavaScript -->
-  <script type="text/javascript" src="static/js/logic.js"></script>
+  <script type="text/javascript" src="logic.js"></script>
+
+  
 </body>
 </html>
